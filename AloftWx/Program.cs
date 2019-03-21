@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -52,12 +53,14 @@ namespace AloftWx
 
             // if the cycle is 0, add an extra 0
             string curCycleStr = curCycle.ToString();
-            curCycleStr = 0 + curCycleStr;
+            if (curCycle < 10)
+            {
+                curCycleStr = 0 + curCycleStr;
+            }
 
             // if the month is less than 10, add an extra 0
             string currentMonthStr = currentMonth.ToString();
             if (currentMonth < 10) { currentMonthStr = 0 + currentMonth.ToString(); }
-
             return currentYear.ToString() + currentMonthStr + currentDay.ToString() + curCycleStr;
         }
 
@@ -98,8 +101,17 @@ namespace AloftWx
         }
         public static string GetFilename(string cycleStr, string forecast)
         {
-            string filename = "WAFS_blended_"  + cycleStr + "f" + forecast + ".grib2";
+            string cycle = int.Parse(cycleStr.Substring(Math.Max(0, cycleStr.Length - 2))).ToString();
+            string filename = "gfs.t" + cycle + "z.pgrb2full.0p50.f0" + forecast;
             return filename;
+        }
+
+        public static void LaunchWGrib2()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"C:\Users\redpa\Documents\FlightGear\aloftWx\AloftWx\wgrib2.exe";
+            // startInfo.Arguments = @"C:\Users\redpa\Downloads\gfs.t06z.pgrb2full.0p50.f000 -wind_speed wind.grb -wind_dir wind.grb -match "(UGRD | VGRD)";
+            Process.Start(startInfo);
         }
     }
 }
