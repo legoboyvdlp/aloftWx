@@ -1,7 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AloftWx.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PATHwgrib2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UDPportOut" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5554</Value>
+    </Setting>
+    <Setting Name="UDPportIn" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5553</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

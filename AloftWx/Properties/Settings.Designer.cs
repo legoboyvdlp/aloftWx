@@ -22,5 +22,41 @@ namespace AloftWx.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PATHwgrib2 {
+            get {
+                return ((string)(this["PATHwgrib2"]));
+            }
+            set {
+                this["PATHwgrib2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5554")]
+        public int UDPportOut {
+            get {
+                return ((int)(this["UDPportOut"]));
+            }
+            set {
+                this["UDPportOut"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5553")]
+        public int UDPportIn {
+            get {
+                return ((int)(this["UDPportIn"]));
+            }
+            set {
+                this["UDPportIn"] = value;
+            }
+        }
     }
 }
