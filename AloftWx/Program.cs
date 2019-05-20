@@ -21,6 +21,8 @@ namespace AloftWx
         public static double[] windSpd = new double[9];
         public static double[] windDir = new double[9];
 
+        private static bool _willParseflag = false;
+
         [STAThread]
         static void Main()
         {
@@ -28,6 +30,7 @@ namespace AloftWx
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new AloftWxForm());
         }
+
         public static string GetDateCycle()
         {
             // declare variables
@@ -62,6 +65,13 @@ namespace AloftWx
                 }
             }
 
+            // if the day is less than 10 append an extra 0
+            string curDayStr = currentDay.ToString();
+            if (currentDay < 10)
+            {
+                curDayStr = 0 + curDayStr;
+            }
+
             // if the cycle is 0, add an extra 0
             string curCycleStr = curCycle.ToString();
             if (curCycle < 10)
@@ -72,7 +82,7 @@ namespace AloftWx
             // if the month is less than 10, add an extra 0
             string currentMonthStr = currentMonth.ToString();
             if (currentMonth < 10) { currentMonthStr = 0 + currentMonth.ToString(); }
-            return currentYear.ToString() + currentMonthStr + currentDay.ToString() + curCycleStr;
+            return currentYear.ToString() + currentMonthStr + curDayStr + curCycleStr;
         }
 
         public static string GetForecast(int cycle)
@@ -248,18 +258,20 @@ namespace AloftWx
                 return 0;
             }
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "CMD.EXE";
-            startInfo.Arguments = @"/c" + PATHwgrib2 + "\\wgrib2.exe " + loadedFilePath + " -wind_speed " + PATHwgrib2 +"/wind2.grb -wind_dir " + PATHwgrib2 + "/wind2.grb";
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "CMD.EXE",
+                Arguments = @"/c" + PATHwgrib2 + "\\wgrib2.exe " + loadedFilePath + " -wind_speed " + PATHwgrib2 + "/wind2.grb -wind_dir " + PATHwgrib2 + "/wind2.grb",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
             Process p = Process.Start(startInfo);
             p.WaitForExit();
             return 50;
         }
 
-        public static int LaunchWGrib2Again(double lat, double lon)
+        public static void LaunchWGrib2Again(double lat, double lon)
         {
             if (Settings.Default.PATHwgrib2 != "")
             {
@@ -269,20 +281,24 @@ namespace AloftWx
             {
                 Form2 f2 = new Form2();
                 f2.ShowDialog(); // Shows Form2
-                return 0;
+                return;
             }
 
             if (lon == -9999 || lat == -9999 || alt == -9999)
             {
                 MessageBox.Show("No data received from FlightGear", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return 0;
+                return;
             }
-            
+
             // int levelMB = GetMillibars(alt);
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "CMD.EXE";
-            startInfo.Arguments = @"/c" + PATHwgrib2 + "\\wgrib2.exe " + PATHwgrib2 + "/wind2.grb" + " -s -lon " + lon.ToString() + " " + lat.ToString() + " -match \":(150|200|250|300|400|500|650|850|1000) mb:\""; startInfo.UseShellExecute = false;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "CMD.EXE",
+                Arguments = @"/c" + PATHwgrib2 + "\\wgrib2.exe " + PATHwgrib2 + "/wind2.grb" + " -s -lon " + lon.ToString() + " " + lat.ToString() + " -match \":(150|200|250|300|400|500|650|850|1000) mb:\"",
+                UseShellExecute = false
+            };
+
             Console.WriteLine(startInfo.Arguments);
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
@@ -371,32 +387,56 @@ namespace AloftWx
             }
             p.WaitForExit();
             PrepareSendData();
-            return 100;
         }
 
         static void PrepareSendData()
         {
-            SendData(Settings.Default.UDPportIn,windDir[0],windSpd[0],windDir[1],windSpd[1],windDir[2],windSpd[2],
-                windDir[3], windSpd[3], windDir[4], windSpd[4], windDir[5], windSpd[5],
-                windDir[6], windSpd[6], windDir[7], windSpd[7], windDir[8], windSpd[8]);
+            if (lat != 9999 && lon != 9999)
+            {
+                SendData(Settings.Default.UDPportIn, lat, lon, windDir[0], windSpd[0], windDir[1], windSpd[1], windDir[2], windSpd[2],
+                    windDir[3], windSpd[3], windDir[4], windSpd[4], windDir[5], windSpd[5],
+                    windDir[6], windSpd[6], windDir[7], windSpd[7], windDir[8], windSpd[8]);
+            }
+            else
+            {
+                MessageBox.Show("Latitude and longitude data not yet received!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
-        static void OnUdpData(IAsyncResult result)
+
+        static async void OnUdpData(IAsyncResult result)
         {
-            // this is what had been passed into BeginReceive as the second parameter:
             UdpClient socket = result.AsyncState as UdpClient;
-            // points towards whoever had sent the message:
             IPEndPoint source = new IPEndPoint(0, 0);
-            // get the actual message and fill out the source:
             byte[] message = socket.EndReceive(result, ref source);
-            // do what you'd like with `message` here:
-            //Console.WriteLine("Got " + message.Length + " bytes from " + source);
+
             string returnData = Encoding.ASCII.GetString(message);
-            //Console.WriteLine(returnData);
             string[] arrayStr = ParseReceivedData(returnData);
+
             alt = double.Parse(arrayStr[0]);
-            lat = double.Parse(arrayStr[1]);
-            lon = double.Parse(arrayStr[2]); // documentation says 0to360 but is actually +-180
-            // schedule the next receive operation once reading is done:
+            double latNew = double.Parse(arrayStr[1]);
+            double latRounded = (Math.Round(latNew * 2, MidpointRounding.AwayFromZero) / 2);
+            double lonNew = double.Parse(arrayStr[2]);
+            double lonRounded = (Math.Round(lonNew * 2, MidpointRounding.AwayFromZero) / 2);
+
+            _willParseflag = false;
+            if ((lat - latRounded) > 0.25 || (lat - latRounded) < -0.25)
+            {
+                lat = latRounded;
+                if (_willParseflag == false) { _willParseflag = true; }
+            }
+
+            if ((lon - lonRounded) > 0.25 || (lon - lonRounded) < -0.25)
+            {
+                lon = lonRounded;
+                if (_willParseflag == false) { _willParseflag = true; }
+            }
+
+            if (_willParseflag == true)
+            {
+                await Task.Run(() => LaunchWGrib2Again(lat, lon));
+            }
+
             socket.BeginReceive(new AsyncCallback(OnUdpData), socket);
         }
 
@@ -422,12 +462,12 @@ namespace AloftWx
         }
 
 
-        public static void SendData(int port, double d0, double v0, double d1, double v1, double d2, double v2, double d3, double v3, double d4, double v4, double d5, double v5, double d6, double v6, double d7, double v7, double d8, double v8)
+        public static void SendData(int port, double lat, double lon, double d0, double v0, double d1, double v1, double d2, double v2, double d3, double v3, double d4, double v4, double d5, double v5, double d6, double v6, double d7, double v7, double d8, double v8)
         {
             try
             {
                 UdpClient socketSend = new UdpClient(port);
-                string msg = d0.ToString() + "," + v0.ToString() + "," + d1.ToString() + "," + v1.ToString() + "," 
+                string msg = lat.ToString() + "," + lon.ToString() + "," + d0.ToString() + "," + v0.ToString() + "," + d1.ToString() + "," + v1.ToString() + "," 
                     + d2.ToString() + "," + v2.ToString() + "," + d3.ToString() + "," + v3.ToString() + "," 
                     + d4.ToString() + "," + v4.ToString() + "," + d5.ToString() + "," + v5.ToString() + "," 
                     + d6.ToString() + "," + v6.ToString() + "," + d7.ToString() + "," + v7.ToString() + "," 

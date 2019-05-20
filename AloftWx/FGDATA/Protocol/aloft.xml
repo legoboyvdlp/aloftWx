@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <generic>
+        <output>
+            <line_separator>newline</line_separator>
+            <var_separator>,</var_separator>
+
+            <!-- Position -->
+            <chunk>
+				<name>altitude</name>
+				<node>/position/altitude-ft</node>
+				<type>float</type>
+				<format>%.2f</format>
+			</chunk>
+			
+            <chunk>
+                <name>latitude (decimal)</name>
+                <node>/position/latitude-deg</node>
+                <type>double</type>
+                <format>%.8f</format>
+            </chunk>
+            
+             <chunk>
+                <name>longitude (decimal)</name>
+                <node>/position/longitude-deg</node>
+                <type>double</type>
+                <format>%0.8f</format>
+            </chunk>
+        </output>
+		
+		<input>
+			<line_separator>newline</line_separator>
+			<var_separator>,</var_separator>
+			<chunk>
+                <name>latitude (decimal)</name>
+                <node>/environment/aloftwind/latitude-deg</node>
+                <type>double</type>
+                <format>%.8f</format>
+            </chunk>
+            
+             <chunk>
+                <name>longitude (decimal)</name>
+                <node>/environment/aloftwind/longitude-deg</node>
+                <type>double</type>
+                <format>%0.8f</format>
+            </chunk>
+			<chunk>
+                <name>winddir-150</name>
+                <node>/environment/aloftwind/winddir/mb150</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-150</name>
+                <node>/environment/aloftwind/windspd/mb150</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-200</name>
+                <node>/environment/aloftwind/winddir/mb200</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-200</name>
+                <node>/environment/aloftwind/windspd/mb200</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-250</name>
+                <node>/environment/aloftwind/winddir/mb250</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-250</name>
+                <node>/environment/aloftwind/windspd/mb250</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-300</name>
+                <node>/environment/aloftwind/winddir/mb300</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-300</name>
+                <node>/environment/aloftwind/windspd/mb300</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-400</name>
+                <node>/environment/aloftwind/winddir/mb400</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-400</name>
+                <node>/environment/aloftwind/windspd/mb400</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-500</name>
+                <node>/environment/aloftwind/winddir/mb500</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-500</name>
+                <node>/environment/aloftwind/windspd/mb500</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-650</name>
+                <node>/environment/aloftwind/winddir/mb650</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-650</name>
+                <node>/environment/aloftwind/windspd/mb650</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-850</name>
+                <node>/environment/aloftwind/winddir/mb850</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-850</name>
+                <node>/environment/aloftwind/windspd/mb850</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>winddir-1000</name>
+                <node>/environment/aloftwind/winddir/mb1000</node>
+				<type>double</type>
+            </chunk>
+			<chunk>
+                <name>windspd-1000</name>
+                <node>/environment/aloftwind/windspd/mb1000</node>
+				<type>double</type>
+            </chunk>
+		</input>
+    </generic>
+</PropertyList>

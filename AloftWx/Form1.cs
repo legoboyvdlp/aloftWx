@@ -29,7 +29,7 @@ namespace AloftWx
             InitializeComponent();
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Click on the link below to continue learning how to build a desktop app using WinForms!
             System.Diagnostics.Process.Start("http://aka.ms/dotnet-get-started-desktop");
@@ -60,13 +60,15 @@ namespace AloftWx
             urlBox.Text = NOAAurl;
 
             // call file dialog
-            SaveFileDialog SaveFileDialog1 = new SaveFileDialog();
-            SaveFileDialog1.Filter = "GRIB2|*.grib2";
-            SaveFileDialog1.Title = "Save GRIB2 file";
-            //SaveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            SaveFileDialog1.InitialDirectory = Application.StartupPath;
-            SaveFileDialog1.RestoreDirectory = true;
-            SaveFileDialog1.FileName = "gfs.t" + curCycleStr + "z0p50f" + forecast + ".grib2";
+            SaveFileDialog SaveFileDialog1 = new SaveFileDialog
+            {
+                Filter = "GRIB2|*.grib2",
+                Title = "Save GRIB2 file",
+                //SaveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                InitialDirectory = Application.StartupPath,
+                RestoreDirectory = true,
+                FileName = "gfs.t" + curCycleStr + "z0p50f" + forecast + ".grib2"
+            };
             SaveFileDialog1.ShowDialog();
 
             if (SaveFileDialog1.FileName != "")
@@ -105,8 +107,10 @@ namespace AloftWx
 
         private void Opengrib2FileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog OpenFileDialog = new OpenFileDialog();
-            OpenFileDialog.Title = "Choose grib2 file";
+            OpenFileDialog OpenFileDialog = new OpenFileDialog
+            {
+                Title = "Choose grib2 file"
+            };
             OpenFileDialog.ShowDialog();
             
             loadedfileBox.Text = OpenFileDialog.FileName;
@@ -129,33 +133,26 @@ namespace AloftWx
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            parseGribBtn();
+            ParseGribBtn();
         }
 
-        private bool parseGribBtn()
+        private bool ParseGribBtn()
         {
-            if (_connectFlag == true)
+            if (_parseFlag == false)
             {
-                UpdateBar2(0);
-                if (_parseFlag == false)
-                {
-                    int progress1 = Program.LaunchWGrib2(loadedfileBox.Text);
-                    UpdateBar2(progress1);
-                    _parseFlag = true;
-                }
-                int progress2 = Program.LaunchWGrib2Again(Program.lat, Program.lon);
-                UpdateBar2(progress2);
-            }
-            else
-            {
-                MessageBox.Show("Not connected to FlightGear yet!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                int progress1 = Program.LaunchWGrib2(loadedfileBox.Text);
+                UpdateBar2(progress1);
+                _parseFlag = true;
             }
             return _parseFlag;
         }
+
         private void Button3_Click(object sender, EventArgs e)
         {
-            OpenFileDialog OpenFileDialog = new OpenFileDialog();
-            OpenFileDialog.Title = "Choose grib2 file";
+            OpenFileDialog OpenFileDialog = new OpenFileDialog
+            {
+                Title = "Choose grib2 file"
+            };
             OpenFileDialog.ShowDialog();
 
             loadedfileBox.Text = OpenFileDialog.FileName;
