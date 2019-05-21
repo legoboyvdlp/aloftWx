@@ -13,9 +13,6 @@ using System.Net;
 using AloftWx.Properties;
 using System.Net.Sockets;
 
-// This is the code for your desktop app.
-// Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-
 namespace AloftWx
 {
     public partial class AloftWxForm : Form
@@ -174,8 +171,10 @@ namespace AloftWx
             if (_connectFlag == true) {
                 return _connectFlag = true;
             }
+            statusLabel.Text = "Connection Open";
             Program.ReceiveData(Settings.Default.UDPportOut);
             return _connectFlag = true;
         }
+        
     }
 }

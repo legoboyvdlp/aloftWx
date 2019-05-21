@@ -56,7 +56,7 @@ namespace AloftWx
             }
 
             // get the correct cycle
-            for (var i = 3; i > 0; i--)
+            for (var i = 3; i >= 0; i--)
             {
                 if (currentHour >= cycles[i])
                 {
@@ -268,7 +268,7 @@ namespace AloftWx
             };
             Process p = Process.Start(startInfo);
             p.WaitForExit();
-            return 50;
+            return 100;
         }
 
         public static void LaunchWGrib2Again(double lat, double lon)

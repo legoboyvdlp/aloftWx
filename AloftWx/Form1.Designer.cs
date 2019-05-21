@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace AloftWx
 {
     partial class AloftWxForm
@@ -28,6 +30,7 @@ namespace AloftWx
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.GetCycleButton = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,6 +47,9 @@ namespace AloftWx
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.progressBar2 = new System.Windows.Forms.ProgressBar();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,8 +136,8 @@ namespace AloftWx
             // connectToFGToolStripMenuItem
             // 
             this.connectToFGToolStripMenuItem.Name = "connectToFGToolStripMenuItem";
-            this.connectToFGToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
-            this.connectToFGToolStripMenuItem.Text = "Connect to FG";
+            this.connectToFGToolStripMenuItem.Size = new System.Drawing.Size(113, 20);
+            this.connectToFGToolStripMenuItem.Text = "Open Connection";
             this.connectToFGToolStripMenuItem.Click += new System.EventHandler(this.ConnectToFGToolStripMenuItem_Click);
             // 
             // button1
@@ -188,11 +194,38 @@ namespace AloftWx
             this.progressBar2.Size = new System.Drawing.Size(411, 28);
             this.progressBar2.TabIndex = 22;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(12, 227);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Status:";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusLabel.Location = new System.Drawing.Point(65, 227);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(67, 13);
+            this.statusLabel.TabIndex = 25;
+            this.statusLabel.Text = "Not Running";
+            // 
             // AloftWxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(435, 249);
+            this.Controls.Add(this.statusLabel);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -232,5 +265,8 @@ namespace AloftWx
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ToolStripMenuItem connectToFGToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar2;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label statusLabel;
     }
 }

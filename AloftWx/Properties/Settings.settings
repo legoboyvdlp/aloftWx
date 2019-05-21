@@ -6,7 +6,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UDPportOut" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5554</Value>
+      <Value Profile="(Default)">5550</Value>
     </Setting>
     <Setting Name="UDPportIn" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5553</Value>

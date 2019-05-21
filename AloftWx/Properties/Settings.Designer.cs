@@ -37,7 +37,7 @@ namespace AloftWx.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5554")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5550")]
         public int UDPportOut {
             get {
                 return ((int)(this["UDPportOut"]));
