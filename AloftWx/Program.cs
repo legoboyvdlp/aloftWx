@@ -22,6 +22,8 @@ namespace AloftWx
         public static double[] windDir = new double[9];
 
         private static bool _willParseflag = false;
+        private static double latRounded;
+        private static double lonRounded;
 
         [STAThread]
         static void Main()
@@ -412,24 +414,41 @@ namespace AloftWx
 
             string returnData = Encoding.ASCII.GetString(message);
             string[] arrayStr = ParseReceivedData(returnData);
-
-            alt = double.Parse(arrayStr[0]);
-            double latNew = double.Parse(arrayStr[1]);
-            double latRounded = (Math.Round(latNew * 2, MidpointRounding.AwayFromZero) / 2);
-            double lonNew = double.Parse(arrayStr[2]);
-            double lonRounded = (Math.Round(lonNew * 2, MidpointRounding.AwayFromZero) / 2);
-
-            _willParseflag = false;
-            if ((lat - latRounded) > 0.25 || (lat - latRounded) < -0.25)
+    
+            try
             {
-                lat = latRounded;
-                if (_willParseflag == false) { _willParseflag = true; }
+                alt = double.Parse(arrayStr[0]);
+                double latNew = double.Parse(arrayStr[1]);
+                latRounded = (Math.Round(latNew * 2, MidpointRounding.AwayFromZero) / 2);
+                double lonNew = double.Parse(arrayStr[2]);
+                lonRounded = (Math.Round(lonNew * 2, MidpointRounding.AwayFromZero) / 2);
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Error: " + ex.Message);
+
+                latRounded = -999;
+                lonRounded = -999;
             }
 
-            if ((lon - lonRounded) > 0.25 || (lon - lonRounded) < -0.25)
+            _willParseflag = false;
+
+            if (latRounded != -999 && lonRounded != -999)
             {
-                lon = lonRounded;
-                if (_willParseflag == false) { _willParseflag = true; }
+                if ((lat - latRounded) > 0.25 || (lat - latRounded) < -0.25)
+                {
+                    lat = latRounded;
+                    if (_willParseflag == false) { _willParseflag = true; }
+                }
+
+                if ((lon - lonRounded) > 0.25 || (lon - lonRounded) < -0.25)
+                {
+                    lon = lonRounded;
+                    if (_willParseflag == false) { _willParseflag = true; }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error: invalid latitude / longitude data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (_willParseflag == true)
