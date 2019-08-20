@@ -424,15 +424,15 @@ namespace AloftWx
                 lonRounded = (Math.Round(lonNew * 2, MidpointRounding.AwayFromZero) / 2);
             }
             catch (Exception ex) {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                latRounded = -999;
-                lonRounded = -999;
+                latRounded = -1234;
+                lonRounded = -1234;
             }
 
             _willParseflag = false;
 
-            if (latRounded != -999 && lonRounded != -999)
+            if (latRounded != -1234 && lonRounded != -1234)
             {
                 if ((lat - latRounded) > 0.25 || (lat - latRounded) < -0.25)
                 {
@@ -448,7 +448,7 @@ namespace AloftWx
             }
             else
             {
-                MessageBox.Show("Error: invalid latitude / longitude data", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: invalid latitude / longitude data received", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (_willParseflag == true)
