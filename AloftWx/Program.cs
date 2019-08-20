@@ -84,7 +84,7 @@ namespace AloftWx
             // if the month is less than 10, add an extra 0
             string currentMonthStr = currentMonth.ToString();
             if (currentMonth < 10) { currentMonthStr = 0 + currentMonth.ToString(); }
-            return currentYear.ToString() + currentMonthStr + curDayStr + curCycleStr;
+            return currentYear.ToString() + currentMonthStr + curDayStr + "/" + curCycleStr;
         }
 
         public static string GetForecast(int cycle)
