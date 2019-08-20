@@ -424,7 +424,8 @@ namespace AloftWx
                 lonRounded = (Math.Round(lonNew * 2, MidpointRounding.AwayFromZero) / 2);
             }
             catch (Exception ex) {
-                MessageBox.Show("Error" + ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string errorString = "Error: " + ex.Message;
+                MessageBox.Show(errorString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 latRounded = -1234;
                 lonRounded = -1234;
