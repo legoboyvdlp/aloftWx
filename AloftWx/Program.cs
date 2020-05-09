@@ -118,7 +118,8 @@ namespace AloftWx
             }
 
             string forecastStr = forecast.ToString();
-            if (forecast < 10) { forecastStr = 0 + forecastStr; }
+            if (forecast < 100 && forecast >= 10) { forecastStr = "0" + forecastStr; }
+            else if (forecast < 10) { forecastStr = "00" + forecastStr; }
 
             return forecastStr;
         }
